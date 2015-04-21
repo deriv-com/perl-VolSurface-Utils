@@ -33,7 +33,7 @@ WriteMakefile(
         'JSON'                                                       => 0,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean => { FILES => 'Date-Utility-*' },
+    clean => { FILES => 'VolSurface-Utils-*' },
     (
         eval { ExtUtils::MakeMaker->VERSION(6.46) }
         ? (
