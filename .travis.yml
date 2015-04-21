@@ -18,5 +18,6 @@ before_install:
     - "cpanm Math::Business::BlackScholes::Binaries::Greeks::Delta"
     - "cpanm File::Spec"
     - "cpanm JSON"
+    - "cpanm Devel::Cover::Report::Coveralls"
 script:
     perl Makefile.PL && make test && cover -test -report coveralls
