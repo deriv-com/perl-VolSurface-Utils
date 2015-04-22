@@ -27,17 +27,17 @@ use base qw( Exporter );
 
 A class that handles several volatility related methods such as gets strikes from a certain delta point, gets delta from a certain vol point etc.
 
- use VolSurface::Utils;
+    use VolSurface::Utils;
 
- my $delta = get_delta_for_strike({
-            strike           => $strike,
-            atm_vol          => $atm_vol,
-            t                => $t,
-            spot             => $spot,
-            r_rate           => $r_rate,
-            q_rate           => $q_rate,
-            premium_adjusted => $premium_adjusted
-          });
+    my $delta = get_delta_for_strike({
+        strike           => $strike,
+        atm_vol          => $atm_vol,
+        t                => $t,
+        spot             => $spot,
+        r_rate           => $r_rate,
+        q_rate           => $q_rate,
+        premium_adjusted => $premium_adjusted
+    });
 
 
 =head1 EXPORT
@@ -68,15 +68,15 @@ our @EXPORT_OK =
 
 Returns the delta (spot delta or premium adjusted spot delta) correspond to a particular strike with set of parameters such as atm volatility, time in year, spot level, rates
 
- my $delta = get_delta_for_strike({
-            strike           => $strike,
-            atm_vol          => $atm_vol,
-            t                => $t,
-            spot             => $spot,
-            r_rate           => $r_rate,
-            q_rate           => $q_rate,
-            premium_adjusted => $premium_adjusted
-});
+    my $delta = get_delta_for_strike({
+        strike           => $strike,
+        atm_vol          => $atm_vol,
+        t                => $t,
+        spot             => $spot,
+        r_rate           => $r_rate,
+        q_rate           => $q_rate,
+        premium_adjusted => $premium_adjusted
+    });
 
 Spot delta of an option is the percentage of the foreign notional one must buy when selling the option to hold a hedged position in the spot markets.
 
@@ -112,16 +112,16 @@ sub get_delta_for_strike {
 
 Returns the strike corresponds to a particular delta (spot delta or premium adjusted spot delta) with a set of parameters such as option type, atm vol, time in year, rates and spot level.
 
- my $strike = get_strike_for_spot_delta({
-            delta            => $delta,
-            option_type      => $option_type,
-            atm_vol          => $atm_vol,
-            t                => $t,
-            r_rate           => $r_rate,
-            q_rate           => $q_rate,
-            spot             => $spot,
-            premium_adjusted => $premium_adjusted
-        });
+    my $strike = get_strike_for_spot_delta({
+        delta            => $delta,
+        option_type      => $option_type,
+        atm_vol          => $atm_vol,
+        t                => $t,
+        r_rate           => $r_rate,
+        q_rate           => $q_rate,
+        spot             => $spot,
+        premium_adjusted => $premium_adjusted
+    });
 
 Calculation of strike depends on which type of delta we have. Delta provided must be on [0,1].
 
@@ -238,7 +238,7 @@ sub _calculate_strike_for_vanilla_call {
 
 Returns the ATM strike that satisifies straddle Delta neutral.
 
- my $atm_strike = get_ATM_strike_for_spot_delta({
+    my $atm_strike = get_ATM_strike_for_spot_delta({
         atm_vol => $atm_vol,
         t => $t,
         r_rate => $r_rate,
@@ -281,8 +281,7 @@ sub get_ATM_strike_for_spot_delta {
 
 Returns the corresponding moneyness point for a given strike.
 
-
- my $moneyness = get_moneyness_for_strike({
+    my $moneyness = get_moneyness_for_strike({
         strike => $strike,
         spot => $spot,
     });
@@ -403,18 +402,18 @@ sub get_2vol_butterfly {
 
 Returns the 1 vol butterfly which is the butterfly volatility that consistent with market standard conventions of trading the butterfly strategies (some paper called it market strnagle volatility)
 
- my $bf_1vol = get_1vol_butterfly({
-            spot             => $volsurface->underlying->spot,
-            tiy              => $tiy,
-            delta            => 0.25,
-            call_vol         => $smile->{25},
-            put_vol          => $smile->{75},
-            atm_vol          => $smile->{50},
-            bf_1vol          => 0,
-            r                => $volsurface->underlying->interest_rate_for($tiy),
-            q                => $volsurface->underlying->dividend_rate_for($tiy),
-            premium_adjusted => $volsurface->underlying->{market_convention}->{delta_premium_adjusted},
-            bf_style         => '2_vol',
+    my $bf_1vol = get_1vol_butterfly({
+        spot             => $volsurface->underlying->spot,
+        tiy              => $tiy,
+        delta            => 0.25,
+        call_vol         => $smile->{25},
+        put_vol          => $smile->{75},
+        atm_vol          => $smile->{50},
+        bf_1vol          => 0,
+        r                => $volsurface->underlying->interest_rate_for($tiy),
+        q                => $volsurface->underlying->dividend_rate_for($tiy),
+        premium_adjusted => $volsurface->underlying->{market_convention}->{delta_premium_adjusted},
+        bf_style         => '2_vol',
     });
 
 =cut
