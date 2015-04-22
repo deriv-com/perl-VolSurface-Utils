@@ -27,8 +27,9 @@ use base qw( Exporter );
 
 A class that handles several volatility related methods such as gets strikes from a certain delta point, gets delta from a certain vol point etc.
 
-use VolSurface::Utils;
-my $delta = get_delta_for_strike({
+ use VolSurface::Utils;
+
+ my $delta = get_delta_for_strike({
             strike           => $strike,
             atm_vol          => $atm_vol,
             t                => $t,
@@ -42,11 +43,17 @@ my $delta = get_delta_for_strike({
 =head1 EXPORT
 
 get_delta_for_strike
+
 get_strike_for_spot_delta
+
 get_ATM_strike_for_spot_delta
+
 get_moneyness_for_strike
+
 get_strike_for_moneyness
+
 get_1vol_butterfly
+
 get_2vol_butterfly
 
 =cut
@@ -61,7 +68,7 @@ our @EXPORT_OK =
 
 Returns the delta (spot delta or premium adjusted spot delta) correspond to a particular strike with set of parameters such as atm volatility, time in year, spot level, rates
 
-my $delta = get_delta_for_strike({
+ my $delta = get_delta_for_strike({
             strike           => $strike,
             atm_vol          => $atm_vol,
             t                => $t,
@@ -105,7 +112,7 @@ sub get_delta_for_strike {
 
 Returns the strike corresponds to a particular delta (spot delta or premium adjusted spot delta) with a set of parameters such as option type, atm vol, time in year, rates and spot level.
 
-my $strike = get_strike_for_spot_delta({
+ my $strike = get_strike_for_spot_delta({
             delta            => $delta,
             option_type      => $option_type,
             atm_vol          => $atm_vol,
@@ -231,7 +238,7 @@ sub _calculate_strike_for_vanilla_call {
 
 Returns the ATM strike that satisifies straddle Delta neutral.
 
-my $atm_strike = get_ATM_strike_for_spot_delta({
+ my $atm_strike = get_ATM_strike_for_spot_delta({
         atm_vol => $atm_vol,
         t => $t,
         r_rate => $r_rate,
@@ -275,7 +282,7 @@ sub get_ATM_strike_for_spot_delta {
 Returns the corresponding moneyness point for a given strike.
 
 
-my $moneyness = get_moneyness_for_strike({
+ my $moneyness = get_moneyness_for_strike({
         strike => $strike,
         spot => $spot,
     });
@@ -297,7 +304,7 @@ sub get_moneyness_for_strike {
 Returns the corresponding strike value for a given moneyness point.
 
 
-my $strike = get_strike_for_moneyness({
+ my $strike = get_strike_for_moneyness({
         spot => $spot,
         moneyness => $moneyness
     });
@@ -321,7 +328,7 @@ sub get_strike_for_moneyness {
 
 Returns the two vol butterfly that satisfy the abitrage free constraint.
 
-my $bf = get_2vol_butterfly($spot, $tiy,$delta, $atm, $rr, $bf, $r, $d, $premium_adjusted, $bf_style);
+ my $bf = get_2vol_butterfly($spot, $tiy,$delta, $atm, $rr, $bf, $r, $d, $premium_adjusted, $bf_style);
 
 DESCRIPTION:
 There are two different butterfly vol:
@@ -396,7 +403,7 @@ sub get_2vol_butterfly {
 
 Returns the 1 vol butterfly which is the butterfly volatility that consistent with market standard conventions of trading the butterfly strategies (some paper called it market strnagle volatility)
 
-    my $bf_1vol = get_1vol_butterfly({
+ my $bf_1vol = get_1vol_butterfly({
             spot             => $volsurface->underlying->spot,
             tiy              => $tiy,
             delta            => 0.25,
