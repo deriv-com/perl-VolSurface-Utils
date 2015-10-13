@@ -61,7 +61,6 @@ get_2vol_butterfly
 our @EXPORT_OK =
     qw( get_delta_for_strike get_strike_for_spot_delta get_ATM_strike_for_spot_delta get_moneyness_for_strike get_strike_for_moneyness get_1vol_butterfly get_2vol_butterfly);
 
-
 =head1 METHODS
 
 =head2 get_delta_for_strike
@@ -616,7 +615,6 @@ sub _implied_vol {
     return $vol;
 }
 
-
 =head1 AUTHOR
 
 Binary.com, C<< <support at binary.com> >>
@@ -669,4 +667,4 @@ Copyright 2015 Binary.com.
 
 =cut
 
-1; # End of VolSurface::Utils
+1;    # End of VolSurface::Utils

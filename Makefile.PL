@@ -20,6 +20,7 @@ WriteMakefile(
         'Test::Exception'  => 0,
         'Test::MockTime'   => 0,
         'Test::MockModule' => 0,
+        'Test::Perl::Critic' => 0,
     },
     PREREQ_PM => {
         'base'                                                       => 0,
