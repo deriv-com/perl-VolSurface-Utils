@@ -14,16 +14,16 @@ before_install:
     - build-perl
     - perl -V
     # install prereqs
-    - "cpanm base"
-    - "cpanm Carp"
-    - "cpanm POSIX"
-    - "cpanm List::MoreUtils"
-    - "cpanm Math::CDF"
-    - "cpanm Math::Business::BlackScholes::Binaries"
-    - "cpanm Math::Business::BlackScholes::Binaries::Greeks::Delta"
-    - "cpanm File::Spec"
-    - "cpanm JSON"
-    - "cpanm Test::Perl::Critic"
-    - "cpanm Devel::Cover::Report::Coveralls"
+    - "cpanm -n base"
+    - "cpanm -n Carp"
+    - "cpanm -n POSIX"
+    - "cpanm -n List::MoreUtils"
+    - "cpanm -n Math::CDF"
+    - "cpanm -n Math::Business::BlackScholes::Binaries"
+    - "cpanm -n Math::Business::BlackScholes::Binaries::Greeks::Delta"
+    - "cpanm -n File::Spec"
+    - "cpanm -n JSON"
+    - "cpanm -n Test::Perl::Critic"
+    - "cpanm -n Devel::Cover::Report::Coveralls"
 script:
     perl Makefile.PL && make test && cover -test -report coveralls
