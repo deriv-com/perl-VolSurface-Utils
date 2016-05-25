@@ -1,22 +1,29 @@
 sudo: false
 language: perl
 perl:
+    - "5.24"
+    - "5.22"
+    - "5.20"
     - "5.18"
     - "5.16"
     - "5.14"
     - "5.12"
 before_install:
+    - git clone git://github.com/travis-perl/helpers ~/travis-perl-helpers
+    - source ~/travis-perl-helpers/init
+    - build-perl
+    - perl -V
     # install prereqs
-    - "cpanm base"
-    - "cpanm Carp"
-    - "cpanm POSIX"
-    - "cpanm List::MoreUtils"
-    - "cpanm Math::CDF"
-    - "cpanm Math::Business::BlackScholes::Binaries"
-    - "cpanm Math::Business::BlackScholes::Binaries::Greeks::Delta"
-    - "cpanm File::Spec"
-    - "cpanm JSON"
-    - "cpanm Test::Perl::Critic"
-    - "cpanm Devel::Cover::Report::Coveralls"
+    - "cpanm -n base"
+    - "cpanm -n Carp"
+    - "cpanm -n POSIX"
+    - "cpanm -n List::MoreUtils"
+    - "cpanm -n Math::CDF"
+    - "cpanm -n Math::Business::BlackScholes::Binaries"
+    - "cpanm -n Math::Business::BlackScholes::Binaries::Greeks::Delta"
+    - "cpanm -n File::Spec"
+    - "cpanm -n JSON"
+    - "cpanm -n Test::Perl::Critic"
+    - "cpanm -n Devel::Cover::Report::Coveralls"
 script:
     perl Makefile.PL && make test && cover -test -report coveralls
