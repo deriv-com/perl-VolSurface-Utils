@@ -26,6 +26,7 @@ before_install:
     - "cpanm -n File::Spec"
     - "cpanm -n JSON"
     - "cpanm -n Test::Perl::Critic"
-    - "cpanm -n Devel::Cover::Report::Coveralls"
+    - "cpanm -n Test::Requires::Git"
+    - "cpanm -n Devel::Cover::Report::Codecov"
 script:
-    perl Makefile.PL && make test && cover -test -report coveralls
+    perl Makefile.PL && make test && cover -test -report codecov

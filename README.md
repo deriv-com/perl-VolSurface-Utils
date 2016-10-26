@@ -1,5 +1,6 @@
 # VolSurface::Utils
-[![Build Status](https://travis-ci.org/binary-com/perl-VolSurface-Utils.svg?branch=master)](https://travis-ci.org/binary-com/perl-VolSurface-Utils) [![Coverage Status](https://coveralls.io/repos/binary-com/perl-VolSurface-Utils/badge.png?branch=master)](https://coveralls.io/r/binary-com/perl-VolSurface-Utils?branch=master)
+[![Build Status](https://travis-ci.org/binary-com/perl-VolSurface-Utils.svg?branch=master)](https://travis-ci.org/binary-com/perl-VolSurface-Utils) 
+[![codecov](https://codecov.io/gh/binary-com/perl-VolSurface-Utils/branch/master/graph/badge.svg)](https://codecov.io/gh/binary-com/perl-VolSurface-Utils)
 
 A class that handles several volatility related methods
 
