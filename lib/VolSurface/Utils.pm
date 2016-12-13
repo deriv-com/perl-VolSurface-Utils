@@ -10,11 +10,11 @@ VolSurface::Utils - A class that handles several volatility related methods
 
 =head1 VERSION
 
-Version 1.01
+Version 1.02
 
 =cut
 
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 use Carp;
 use List::MoreUtils qw(notall);
