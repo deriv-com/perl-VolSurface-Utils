@@ -1,15 +1,23 @@
-requires 'List::MoreUtils';
-requires 'URI';
-requires 'Math::CDF';
-requires 'Math::Business::BlackScholes::Binaries::Greeks::Delta';
+requires 'Carp';
 requires 'File::Spec';
 requires 'JSON';
+requires 'List::MoreUtils';
 requires 'Math::Business::BlackScholes::Binaries';
+requires 'Math::Business::BlackScholes::Binaries::Greeks::Delta';
+requires 'Math::CDF';
+requires 'POSIX';
+requires 'base';
+requires 'perl', '5.006';
+
+on configure => sub {
+    requires 'ExtUtils::MakeMaker';
+};
 
 on test => sub {
-    requires 'Test::More', '0.96';
-    requires 'Test::NoWarnings' => 0;
-    requires 'Test::Exception'  => 0;
-    requires 'Test::MockTime'   => 0;
-    requires 'Test::MockModule' => 0;
+    requires 'Test::Exception';
+    requires 'Test::MockModule';
+    requires 'Test::MockTime';
+    requires 'Test::More';
+    requires 'Test::NoWarnings';
+    requires 'Test::Perl::Critic';
 };
