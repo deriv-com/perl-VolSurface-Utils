@@ -549,8 +549,6 @@ sub _smile_approximation {
     my $d1_k1 = ((0.5 * $vol_k2 * $vol_k2 * $tiy) + log($F / $k1)) / ($vol_k2 * sqrt($tiy));
     my $d2_k1 = $d1_k1 - ($vol_k2 * sqrt($tiy));
 
-    my $d1_k2 = ((0.5 * $vol_k2 * $vol_k2 * $tiy) + log($F / $k2)) / ($vol_k2 * sqrt($tiy));
-
     my $d1_k3 = ((0.5 * $vol_k2 * $vol_k2 * $tiy) + log($F / $k3)) / ($vol_k2 * sqrt($tiy));
     my $d2_k3 = $d1_k3 - ($vol_k2 * sqrt($tiy));
 
