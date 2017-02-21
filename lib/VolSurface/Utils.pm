@@ -8,13 +8,9 @@ use warnings;
 
 VolSurface::Utils - A class that handles several volatility related methods
 
-=head1 VERSION
-
-Version 1.02
-
 =cut
 
-our $VERSION = '1.02';
+our $VERSION = '1.03';
 
 use Carp;
 use List::MoreUtils qw(notall);
@@ -29,6 +25,7 @@ A class that handles several volatility related methods such as gets strikes fro
 
     use VolSurface::Utils;
 
+    my ($strike, $atm_vol, $t, $spot, $r_rate, $q_rate, $premium_adjusted) = (); ## initialize args
     my $delta = get_delta_for_strike({
         strike           => $strike,
         atm_vol          => $atm_vol,
@@ -158,9 +155,9 @@ sub get_strike_for_spot_delta {
 sub _calculate_strike_for_vanilla_put {
     my $args = shift;
 
-    my ($normalInv, $delta, $option_type, $sigma, $time_in_years, $r, $d, $S, $premium_adjusted) = (
-        $args->{normalInv}, $args->{delta},  $args->{option_type}, $args->{atm_vol}, $args->{t},
-        $args->{r_rate},    $args->{q_rate}, $args->{spot},        $args->{premium_adjusted});
+    my ($normalInv, $delta, $sigma, $time_in_years, $r, $d, $S, $premium_adjusted) =
+        ($args->{normalInv}, $args->{delta}, $args->{atm_vol}, $args->{t},
+        $args->{r_rate}, $args->{q_rate}, $args->{spot}, $args->{premium_adjusted});
 
     #Step 1: Set initial k level with corresponding to spot delta without premium_adjusted
     my $k = $S * exp(($normalInv * $sigma * sqrt($time_in_years)) + ($r - $d + ($sigma * $sigma / 2)) * $time_in_years);
@@ -196,9 +193,9 @@ sub _calculate_strike_for_vanilla_put {
 sub _calculate_strike_for_vanilla_call {
     my $args = shift;
 
-    my ($normalInv, $delta, $option_type, $sigma, $time_in_years, $r, $d, $S, $premium_adjusted) = (
-        $args->{normalInv}, $args->{delta},  $args->{option_type}, $args->{atm_vol}, $args->{t},
-        $args->{r_rate},    $args->{q_rate}, $args->{spot},        $args->{premium_adjusted});
+    my ($normalInv, $delta, $sigma, $time_in_years, $r, $d, $S, $premium_adjusted) =
+        ($args->{normalInv}, $args->{delta}, $args->{atm_vol}, $args->{t},
+        $args->{r_rate}, $args->{q_rate}, $args->{spot}, $args->{premium_adjusted});
 
     #Step 1: Set initial k level with corresponding to spot delta without premium_adjusted.
     my $k = $S * exp(-($normalInv * $sigma * sqrt($time_in_years)) + ($r - $d + ($sigma * $sigma / 2)) * $time_in_years);
@@ -551,9 +548,6 @@ sub _smile_approximation {
 
     my $d1_k1 = ((0.5 * $vol_k2 * $vol_k2 * $tiy) + log($F / $k1)) / ($vol_k2 * sqrt($tiy));
     my $d2_k1 = $d1_k1 - ($vol_k2 * sqrt($tiy));
-
-    my $d1_k2 = ((0.5 * $vol_k2 * $vol_k2 * $tiy) + log($F / $k2)) / ($vol_k2 * sqrt($tiy));
-    my $d2_k2 = $d1_k2 - ($vol_k2 * sqrt($tiy));
 
     my $d1_k3 = ((0.5 * $vol_k2 * $vol_k2 * $tiy) + log($F / $k3)) / ($vol_k2 * sqrt($tiy));
     my $d2_k3 = $d1_k3 - ($vol_k2 * sqrt($tiy));
