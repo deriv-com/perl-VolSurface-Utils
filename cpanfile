@@ -1,6 +1,5 @@
 requires 'Carp';
 requires 'File::Spec';
-requires 'JSON';
 requires 'List::MoreUtils';
 requires 'Math::Business::BlackScholes::Binaries';
 requires 'Math::Business::BlackScholes::Binaries::Greeks::Delta';
