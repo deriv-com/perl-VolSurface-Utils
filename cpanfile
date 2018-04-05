@@ -1,7 +1,7 @@
 requires 'Carp';
 requires 'File::Spec';
 requires 'List::MoreUtils';
-requires 'Math::Business::BlackScholes::Binaries';
+requires 'Math::Business::BlackScholes';
 requires 'Math::Business::BlackScholes::Binaries::Greeks::Delta';
 requires 'Math::CDF';
 requires 'POSIX';
