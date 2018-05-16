@@ -13,7 +13,7 @@ VolSurface::Utils - A class that handles several volatility related methods
 our $VERSION = '1.03';
 
 use Carp;
-use List::MoreUtils qw(notall);
+use List::Util qw(notall);
 use Math::CDF qw(pnorm qnorm);
 use Math::Business::BlackScholesMerton::NonBinaries;
 use Math::Business::BlackScholes::Binaries::Greeks::Delta;

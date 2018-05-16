@@ -1,6 +1,6 @@
 requires 'Carp';
 requires 'File::Spec';
-requires 'List::MoreUtils';
+requires 'List::Util';
 requires 'Math::Business::BlackScholesMerton';
 requires 'Math::Business::BlackScholes::Binaries::Greeks::Delta';
 requires 'Math::CDF';
