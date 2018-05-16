@@ -10,7 +10,7 @@ VolSurface::Utils - A class that handles several volatility related methods
 
 =cut
 
-our $VERSION = '1.03';
+our $VERSION = '1.04';
 
 use Carp;
 use List::Util qw(notall);
@@ -508,16 +508,15 @@ sub _strangle_difference {
         $consistent_put_strike, $strike_atm, $consistent_call_strike, $put_sigma, $atm, $call_sigma, $d, $r);
 
     # 5.2: Strangle struck at market traded butterfly strikes (ie those obtained on step 4) with smile volatility builds with market quoted volatilities
-    my $call_with_consistent_vol =
-        Math::Business::BlackScholesMerton::NonBinaries::vanilla_call($S, $market_conventional_call_strike, $tiy, $r, $r - $d,
-        $market_conventional_call_sigma);
+    my $call_with_consistent_vol = Math::Business::BlackScholesMerton::NonBinaries::vanilla_call($S, $market_conventional_call_strike,
+        $tiy, $r, $r - $d, $market_conventional_call_sigma);
 
-    my $put_with_consistent_vol =
-        Math::Business::BlackScholesMerton::NonBinaries::vanilla_put($S, $market_conventional_put_strike, $tiy, $r, $r - $d, $market_conventional_put_sigma);
+    my $put_with_consistent_vol = Math::Business::BlackScholesMerton::NonBinaries::vanilla_put($S, $market_conventional_put_strike,
+        $tiy, $r, $r - $d, $market_conventional_put_sigma);
     my $strangle_with_consistent_vol = $call_with_consistent_vol + $put_with_consistent_vol;
     # 5.3: Strangle struck at market traded butterfly strikes (ie those obtained on step 4) with market coventional volatility of butterfly.
-    my $call_with_market_conventional_bf =
-        Math::Business::BlackScholesMerton::NonBinaries::vanilla_call($S, $market_conventional_call_strike, $tiy, $r, $r - $d, $market_conventional_bf);
+    my $call_with_market_conventional_bf = Math::Business::BlackScholesMerton::NonBinaries::vanilla_call($S, $market_conventional_call_strike,
+        $tiy, $r, $r - $d, $market_conventional_bf);
     my $put_with_market_conventional_bf =
         Math::Business::BlackScholesMerton::NonBinaries::vanilla_put($S, $market_conventional_put_strike, $tiy, $r, $r - $d, $market_conventional_bf);
     my $strangle_with_market_conventional_bf = $call_with_market_conventional_bf + $put_with_market_conventional_bf;
