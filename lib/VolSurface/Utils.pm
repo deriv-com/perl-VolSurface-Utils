@@ -100,7 +100,7 @@ sub get_delta_for_strike {
         $delta = ($K / $S) * exp(-1 * $r * $t) * pnorm($d2);
     } else {
         my $d1 = (log($S / $K) + ($r - $q + ($sigma**2) / 2) * $t) / ($sigma * sqrt($t));
-        my $forward_adj = $foward ? 1 : exp(-1 * $q * $t);
+        my $forward_adj = $forward ? 1 : exp(-1 * $q * $t);
         $delta = exp(-1 * $q * $t) * pnorm($d1);
     }
 
