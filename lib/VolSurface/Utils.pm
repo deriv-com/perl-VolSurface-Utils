@@ -90,6 +90,7 @@ sub get_delta_for_strike {
     }
 
     my $forward = $new_args{t} >= 1 ? 1 : 0;
+    my $forward_adj = $forward ? 1 : exp(-1 * $new_args{r_rate} * $new_args{t});
 
     my ($K, $sigma, $t, $S, $r, $q, $premium_adjusted) =
         ($new_args{strike}, $new_args{atm_vol}, $new_args{t}, $new_args{spot}, $new_args{r_rate}, $new_args{q_rate}, $new_args{premium_adjusted});
@@ -97,10 +98,9 @@ sub get_delta_for_strike {
     my $delta;
     if ($premium_adjusted) {
         my $d2 = (log($S / $K) + ($r - $q - ($sigma**2) / 2) * $t) / ($sigma * sqrt($t));
-        $delta = ($K / $S) * exp(-1 * $r * $t) * pnorm($d2);
+        $delta = ($K / $S) * $forward_adj * pnorm($d2);
     } else {
         my $d1 = (log($S / $K) + ($r - $q + ($sigma**2) / 2) * $t) / ($sigma * sqrt($t));
-        my $forward_adj = $forward ? 1 : exp(-1 * $q * $t);
         $delta = $forward_adj * pnorm($d1);
     }
 
@@ -135,7 +135,7 @@ sub get_strike_for_spot_delta {
         croak "Arg $_ is undef at get_strike_for_spot_delta" unless defined $args->{$_};
     }
 
-    my $forward = $new_args{t} >= 1 ? 1 : 0;
+    $new_args{forward} = $new_args{t} >= 1 ? 1 : 0;
 
     if (!grep { $new_args{option_type} eq $_ } qw(VANILLA_CALL VANILLA_PUT)) {
         croak 'Wrong option type [' . $new_args{option_type} . ']';
@@ -145,8 +145,12 @@ sub get_strike_for_spot_delta {
         croak 'Provided delta [' . $new_args{delta} . '] must be on [0,1]';
     }
 
-    if ($forward) {
-        $new_args{delta} = $new_args{delta} * exp(-$new_args{q_rate} * $new_args{t});
+    if ($new_args{forward}) {
+        if ($new_args{premium_adjusted}){
+            $new_args{delta} = $new_args{delta} * exp(-$new_args{r_rate} * $new_args{t});
+        } else {
+            $new_args{delta} = $new_args{delta} * exp(-$new_args{q_rate} * $new_args{t});
+        }
     }
 
     $new_args{normalInv} = qnorm($new_args{delta} / exp(-$new_args{q_rate} * $new_args{t}));

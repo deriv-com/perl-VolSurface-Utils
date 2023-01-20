@@ -334,9 +334,9 @@ my $expected_strike_delta = {
     },
     365 => {
         premium_adjusted => {
-            K_25P => 97.47,
+            K_25P => 97.34,
             K_ATM => 105.74,
-            K_25C => 113.01
+            K_25C => 113.13
         },
         non_premium_adjusted => {
             K_25P => 98.28,
