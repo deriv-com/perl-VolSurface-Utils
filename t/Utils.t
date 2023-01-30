@@ -30,7 +30,8 @@ subtest get_delta_for_strike => sub {
         spot             => 99,
         r_rate           => 0.1,
         q_rate           => 0.2,
-        premium_adjusted => undef
+        premium_adjusted => undef,
+        forward          => 0
     );
     throws_ok { get_delta_for_strike(\%args) } qr/is undef at /, 'throws exception when args is undef';
     $args{premium_adjusted} = 1;

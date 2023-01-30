@@ -71,7 +71,8 @@ Returns the delta (spot delta or premium adjusted spot delta) correspond to a pa
         spot             => $spot,
         r_rate           => $r_rate,
         q_rate           => $q_rate,
-        premium_adjusted => $premium_adjusted
+        premium_adjusted => $premium_adjusted,
+        forward          => $forward
     });
 
 Spot delta of an option is the percentage of the foreign notional one must buy when selling the option to hold a hedged position in the spot markets.
@@ -84,21 +85,19 @@ sub get_delta_for_strike {
     my $args = shift;
 
     my %new_args = %$args;
-    my @required = qw(strike atm_vol t spot r_rate q_rate premium_adjusted);
+    my @required = qw(strike atm_vol t spot r_rate q_rate premium_adjusted forward);
     for (@required) {
         croak "Arg $_ is undef at get_delta_for_strike" unless defined $args->{$_};
     }
-
-    $new_args{forward} = $new_args{t} >= 1 ? 1 : 0;
 
     my ($K, $sigma, $t, $S, $r, $q, $premium_adjusted) =
         ($new_args{strike}, $new_args{atm_vol}, $new_args{t}, $new_args{spot}, $new_args{r_rate}, $new_args{q_rate}, $new_args{premium_adjusted});
 
     my $delta;
     if ($premium_adjusted) {
-        my $forward_adj = $new_args{forward} ? 1 : exp(-1 * $new_args{r_rate} * $new_args{t});
+        my $forward_adj = $new_args{forward} ? exp($new_args{q_rate} * $new_args{t}) : 1;
         my $d2 = (log($S / $K) + ($r - $q - ($sigma**2) / 2) * $t) / ($sigma * sqrt($t));
-        $delta = ($K / $S) * $forward_adj * pnorm($d2);
+        $delta = ($K / $S) * $forward_adj * exp(-1 * $new_args{r_rate} * $new_args{t}) * pnorm($d2);
     } else {
         my $forward_adj = $new_args{forward} ? 1 : exp(-1 * $new_args{q_rate} * $new_args{t});
         my $d1 = (log($S / $K) + ($r - $q + ($sigma**2) / 2) * $t) / ($sigma * sqrt($t));
@@ -145,11 +144,7 @@ sub get_strike_for_spot_delta {
     }
 
     if ($new_args{forward}) {
-        if ($new_args{premium_adjusted}){
-            $new_args{delta} = $new_args{delta} * exp(-$new_args{r_rate} * $new_args{t});
-        } else {
-            $new_args{delta} = $new_args{delta} * exp(-$new_args{q_rate} * $new_args{t});
-        }
+        $new_args{delta} = $new_args{delta} * exp(-$new_args{q_rate} * $new_args{t});
     }
 
     $new_args{normalInv} = qnorm($new_args{delta} / exp(-$new_args{q_rate} * $new_args{t}));
