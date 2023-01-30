@@ -207,7 +207,7 @@ subtest get_1vol_butterfly => sub {
     );
     my $onevol_butterfly;
     lives_ok { $onevol_butterfly = get_1vol_butterfly(\%args) } 'can calculate 1vol butterfly with bf_style = 2vol';
-    is($onevol_butterfly, 0.0051, 'correct value of 1vol butterfly');
+    is($onevol_butterfly, 0.0046, 'correct value of 1vol butterfly');
     $args{bf_style} = '1vol';
     lives_ok { get_1vol_butterfly(\%args) } 'can calculate 1vol butterfly with bf_style = 1vol';
 };
@@ -334,14 +334,14 @@ my $expected_strike_delta = {
     },
     365 => {
         premium_adjusted => {
-            K_25P => 97.34,
+            K_25P => 97.73,
             K_ATM => 105.74,
-            K_25C => 113.13
+            K_25C => 112.78
         },
         non_premium_adjusted => {
-            K_25P => 98.28,
+            K_25P => 98.55,
             K_ATM => 106.86,
-            K_25C => 113.38
+            K_25C => 113.16
         },
         interest_rate => 0.0415,
         dividend_rate => 0.027,

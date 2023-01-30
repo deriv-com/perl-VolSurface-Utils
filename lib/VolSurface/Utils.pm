@@ -89,7 +89,7 @@ sub get_delta_for_strike {
         croak "Arg $_ is undef at get_delta_for_strike" unless defined $args->{$_};
     }
 
-    my $new_args{forward} = $new_args{t} >= 1 ? 1 : 0;
+    $new_args{forward} = $new_args{t} >= 1 ? 1 : 0;
 
     my ($K, $sigma, $t, $S, $r, $q, $premium_adjusted) =
         ($new_args{strike}, $new_args{atm_vol}, $new_args{t}, $new_args{spot}, $new_args{r_rate}, $new_args{q_rate}, $new_args{premium_adjusted});
