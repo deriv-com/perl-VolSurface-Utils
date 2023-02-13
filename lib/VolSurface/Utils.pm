@@ -470,7 +470,8 @@ sub _strangle_difference {
         r_rate           => $r,
         q_rate           => $d,
         spot             => $S,
-        premium_adjusted => $premium_adjusted
+        premium_adjusted => $premium_adjusted,
+        forward => $tiy >= 1 ? 1 : 0
     });
     my $consistent_put_strike = get_strike_for_spot_delta({
         delta            => $delta,
@@ -480,7 +481,8 @@ sub _strangle_difference {
         r_rate           => $r,
         q_rate           => $d,
         spot             => $S,
-        premium_adjusted => $premium_adjusted
+        premium_adjusted => $premium_adjusted,
+        forward => $tiy >= 1 ? 1 : 0
     });
 
     #Step 4: Calculate the two call and put strikes for the market traded butterfly (ie with market conventional volatility of butterfly obtain on step 1.)
@@ -492,7 +494,8 @@ sub _strangle_difference {
         r_rate           => $r,
         q_rate           => $d,
         spot             => $S,
-        premium_adjusted => $premium_adjusted
+        premium_adjusted => $premium_adjusted,
+        forward => $tiy >= 1 ? 1 : 0
     });
     my $market_conventional_put_strike = get_strike_for_spot_delta({
         delta            => $delta,
@@ -502,7 +505,8 @@ sub _strangle_difference {
         r_rate           => $r,
         q_rate           => $d,
         spot             => $S,
-        premium_adjusted => $premium_adjusted
+        premium_adjusted => $premium_adjusted,
+        forward => $tiy >= 1 ? 1 : 0
     });
 
     #Step 5: Calculate the difference between the strangle struck at the market traded butterfly strikes(those obtained on step 4) valued with the smile volatility( ie the one build with market quoted volatilities), and the same strangle struck at same market traded butterfly strikes but valued with market conventional volatility of butterfly(ie. the one obtained on step 1).

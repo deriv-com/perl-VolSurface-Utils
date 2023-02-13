@@ -50,21 +50,33 @@ subtest get_strike_for_spot_delta => sub {
         spot             => 99,
         r_rate           => 0.1,
         q_rate           => 0.2,
-        premium_adjusted => undef
+        premium_adjusted => undef,
+        forward => 0
     );
     throws_ok { get_strike_for_spot_delta(\%args) } qr/ is undef/, 'throws exception when args is undef';
+    $args{premium_adjusted} = 0;
+    lives_ok { get_strike_for_spot_delta(\%args) } 'can calculate strike for a spot delta for CALL';
+    $args{forward} = 1;
+    lives_ok { get_strike_for_spot_delta(\%args) } 'can calculate strike for a forward delta for CALL';
     $args{premium_adjusted} = 1;
+    $args{forward} = 0;
     lives_ok { get_strike_for_spot_delta(\%args) } 'can calculate strike for a premium adjusted delta for CALL';
+    $args{forward} = 1;
+    lives_ok { get_strike_for_spot_delta(\%args) } 'can calculate strike for a forward premium adjusted delta for CALL';
     $args{delta} = 50;
     throws_ok { get_strike_for_spot_delta(\%args) } qr/^Provided delta.*must be on \[0,1\]/, 'Throws exception for deltas out of [0,1]';
+    $args{option_type}      = 'VANILLA_PUT';
     $args{delta}            = 0.50;
     $args{premium_adjusted} = 0;
-    lives_ok { get_strike_for_spot_delta(\%args) } 'can calculate strike for a non premium adjusted delta for CALL';
-    $args{option_type}      = 'VANILLA_PUT';
+    $args{forward} = 0;
+    lives_ok { get_strike_for_spot_delta(\%args) } 'can calculate strike for a spot delta for PUT';
+    $args{forward} = 1;
+    lives_ok { get_strike_for_spot_delta(\%args) } 'can calculate strike for a forward delta for PUT';
     $args{premium_adjusted} = 1;
+    $args{forward} = 0;
     lives_ok { get_strike_for_spot_delta(\%args) } 'can calculate strike for a premium adjusted delta for PUT';
-    $args{premium_adjusted} = 0;
-    lives_ok { get_strike_for_spot_delta(\%args) } 'can calculate strike for a non premium adjusted delta for PUT';
+    $args{forward} = 1;
+    lives_ok { get_strike_for_spot_delta(\%args) } 'can calculate strike for a forward premium adjusted delta for PUT';
     $args{option_type} = 'WHATEVER';
     throws_ok { get_strike_for_spot_delta(\%args) } qr/type/,
         'throws exception if you try to calculate strike for anything except for VANILLA_CALL & VANILLA_PUT';
@@ -441,7 +453,8 @@ subtest 'Premium adjusted delta.' => sub {
                         r_rate           => $r,
                         q_rate           => $d,
                         spot             => $S,
-                        premium_adjusted => 1
+                        premium_adjusted => 1,
+                        forward => $time_in_years >= 1 ? 1 : 0
                     }));
         }
         'Can get call strike from premium adjusted delta ';
@@ -457,7 +470,8 @@ subtest 'Premium adjusted delta.' => sub {
                         r_rate           => $r,
                         q_rate           => $d,
                         spot             => $S,
-                        premium_adjusted => 1
+                        premium_adjusted => 1,
+                        forward => $time_in_years >= 1 ? 1 : 0
                     }));
         }
         'Can get put strike from premium adjusted delta';
@@ -512,7 +526,8 @@ subtest 'Premium adjusted delta.' => sub {
                         r_rate           => $r,
                         q_rate           => $d,
                         spot             => $S,
-                        premium_adjusted => 0
+                        premium_adjusted => 0,
+                        forward => $time_in_years >= 1 ? 1 : 0
                     }));
         }
         'Can get call strike from non premium adjusted delta ';
@@ -528,7 +543,8 @@ subtest 'Premium adjusted delta.' => sub {
                         r_rate           => $r,
                         q_rate           => $d,
                         spot             => $S,
-                        premium_adjusted => 0
+                        premium_adjusted => 0,
+                        forward => $time_in_years >= 1 ? 1 : 0
                     }));
         }
         'Can get put strike from premium adjusted delta';
@@ -569,7 +585,8 @@ subtest 'get_strike_for_spot_delta' => sub {
             r_rate           => $r,
             q_rate           => $d,
             spot             => $S,
-            premium_adjusted => 0
+            premium_adjusted => 0,
+            forward => $time_in_years >= 1 ? 1 : 0
         });
     my $strike_pa = sprintf "%.4f",
         get_strike_for_spot_delta({
@@ -580,7 +597,8 @@ subtest 'get_strike_for_spot_delta' => sub {
             r_rate           => $r,
             q_rate           => $d,
             spot             => $S,
-            premium_adjusted => 1
+            premium_adjusted => 1,
+            forward => $time_in_years >= 1 ? 1 : 0
         });
 
     my $strike_expected = 97.4614;
