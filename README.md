@@ -10,7 +10,7 @@ A class that handles several volatility related methods such as gets strikes fro
 
 use VolSurface::Utils;
 
-my $delta = get_delta_for_strike({ strike => $strike, atm_vol => $atm_vol, t => $t, spot => $spot, r_rate =>$r_rate, q_rate => $q_rate, premium_adjusted => $premium_adjusted , $forward => $forward});
+my $delta = get_delta_for_strike({ strike => $strike, atm_vol => $atm_vol, t => $t, spot => $spot, r_rate =>$r_rate, q_rate => $q_rate, premium_adjusted => $premium_adjusted , forward => $forward});
 
 
 #### INSTALLATION
