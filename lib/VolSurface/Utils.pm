@@ -10,7 +10,7 @@ VolSurface::Utils - A class that handles several volatility related methods
 
 =cut
 
-our $VERSION = '1.04';
+our $VERSION = '1.06';
 
 use Carp;
 use List::Util qw(notall);
@@ -71,7 +71,8 @@ Returns the delta (spot delta or premium adjusted spot delta) correspond to a pa
         spot             => $spot,
         r_rate           => $r_rate,
         q_rate           => $q_rate,
-        premium_adjusted => $premium_adjusted
+        premium_adjusted => $premium_adjusted,
+        forward          => $forward
     });
 
 Spot delta of an option is the percentage of the foreign notional one must buy when selling the option to hold a hedged position in the spot markets.
@@ -84,7 +85,7 @@ sub get_delta_for_strike {
     my $args = shift;
 
     my %new_args = %$args;
-    my @required = qw(strike atm_vol t spot r_rate q_rate premium_adjusted);
+    my @required = qw(strike atm_vol t spot r_rate q_rate premium_adjusted forward);
     for (@required) {
         croak "Arg $_ is undef at get_delta_for_strike" unless defined $args->{$_};
     }
@@ -94,11 +95,13 @@ sub get_delta_for_strike {
 
     my $delta;
     if ($premium_adjusted) {
+        my $forward_adj = $new_args{forward} ? exp($new_args{q_rate} * $new_args{t}) : 1;
         my $d2 = (log($S / $K) + ($r - $q - ($sigma**2) / 2) * $t) / ($sigma * sqrt($t));
-        $delta = ($K / $S) * exp(-1 * $r * $t) * pnorm($d2);
+        $delta = ($K / $S) * $forward_adj * exp(-1 * $new_args{r_rate} * $new_args{t}) * pnorm($d2);
     } else {
+        my $forward_adj = $new_args{forward} ? 1 : exp(-1 * $new_args{q_rate} * $new_args{t});
         my $d1 = (log($S / $K) + ($r - $q + ($sigma**2) / 2) * $t) / ($sigma * sqrt($t));
-        $delta = exp(-1 * $q * $t) * pnorm($d1);
+        $delta = $forward_adj * pnorm($d1);
     }
 
     return $delta;
@@ -138,6 +141,10 @@ sub get_strike_for_spot_delta {
 
     if ($new_args{delta} < 0 or $new_args{delta} > 1) {
         croak 'Provided delta [' . $new_args{delta} . '] must be on [0,1]';
+    }
+
+    if ($new_args{forward}) {
+        $new_args{delta} = $new_args{delta} * exp(-$new_args{q_rate} * $new_args{t});
     }
 
     $new_args{normalInv} = qnorm($new_args{delta} / exp(-$new_args{q_rate} * $new_args{t}));
@@ -463,7 +470,8 @@ sub _strangle_difference {
         r_rate           => $r,
         q_rate           => $d,
         spot             => $S,
-        premium_adjusted => $premium_adjusted
+        premium_adjusted => $premium_adjusted,
+        forward => $tiy >= 1 ? 1 : 0
     });
     my $consistent_put_strike = get_strike_for_spot_delta({
         delta            => $delta,
@@ -473,7 +481,8 @@ sub _strangle_difference {
         r_rate           => $r,
         q_rate           => $d,
         spot             => $S,
-        premium_adjusted => $premium_adjusted
+        premium_adjusted => $premium_adjusted,
+        forward => $tiy >= 1 ? 1 : 0
     });
 
     #Step 4: Calculate the two call and put strikes for the market traded butterfly (ie with market conventional volatility of butterfly obtain on step 1.)
@@ -485,7 +494,8 @@ sub _strangle_difference {
         r_rate           => $r,
         q_rate           => $d,
         spot             => $S,
-        premium_adjusted => $premium_adjusted
+        premium_adjusted => $premium_adjusted,
+        forward => $tiy >= 1 ? 1 : 0
     });
     my $market_conventional_put_strike = get_strike_for_spot_delta({
         delta            => $delta,
@@ -495,7 +505,8 @@ sub _strangle_difference {
         r_rate           => $r,
         q_rate           => $d,
         spot             => $S,
-        premium_adjusted => $premium_adjusted
+        premium_adjusted => $premium_adjusted,
+        forward => $tiy >= 1 ? 1 : 0
     });
 
     #Step 5: Calculate the difference between the strangle struck at the market traded butterfly strikes(those obtained on step 4) valued with the smile volatility( ie the one build with market quoted volatilities), and the same strangle struck at same market traded butterfly strikes but valued with market conventional volatility of butterfly(ie. the one obtained on step 1).
